@@ -6,31 +6,34 @@ using UnityEngine.AI;
 public class AgentBehavior : MonoBehaviour
 {
     public NavMeshAgent agent;
-    public Transform target;
-    public Transform target2;
-    public Transform targetAux;
+    public Transform[] targets; 
+    public Transform targetAux; 
 
-    // Start is called before the first frame update
+    int index = 0; 
+
     void Start()
     {
-        targetAux = target;
+       
+        targetAux = targets[index];
         agent.destination = targetAux.position;
     }
 
-    // Update is called once per frame
     void Update()
     {
         
-        if (agent.hasPath && agent.remainingDistance < 1)
+        if (agent.remainingDistance < 1)
         {
-            if(targetAux == target)
+           
+            index = index + 1;
+
+           
+            if (index >= targets.Length)
             {
-                targetAux = target2;
+                index = 0;
             }
-            else
-            {
-                targetAux = target;
-            }
+
+            
+            targetAux = targets[index];
             agent.destination = targetAux.position;
         }
     }
